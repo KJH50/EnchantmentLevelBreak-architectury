@@ -1,4 +1,4 @@
-# Enchantment Level Break Patched - 修改说明
+# EnchantmentLevelBreakPatched - 修改说明
 
 ## 一、原版信息
 
