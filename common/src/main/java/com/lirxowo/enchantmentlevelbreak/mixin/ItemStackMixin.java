@@ -24,6 +24,11 @@ public abstract class ItemStackMixin {
         if (IS_PROCESSING.get()) {
             return;
         }
+
+        if (!ModConfig.getInstance().isAllowEnchantmentTableRestacking()) {
+            return;
+        }
+
         try {
             IS_PROCESSING.set(true);
             ItemStack stack = (ItemStack)(Object)this;
@@ -32,12 +37,16 @@ public abstract class ItemStackMixin {
                 if (stack.is(Items.ENCHANTED_BOOK)) {
                     ItemEnchantments currentEnchantments = stack.getOrDefault(DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY);
                     ItemEnchantments.Mutable mutable = new ItemEnchantments.Mutable(currentEnchantments);
-                    mutable.set(enchantment, level);
+                    int currentLevel = mutable.getLevel(enchantment);
+                    int newLevel = calculateNewLevel(currentLevel, level);
+                    mutable.set(enchantment, newLevel);
                     stack.set(DataComponents.STORED_ENCHANTMENTS, mutable.toImmutable());
                 } else {
                     ItemEnchantments currentEnchantments = stack.getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY);
                     ItemEnchantments.Mutable mutable = new ItemEnchantments.Mutable(currentEnchantments);
-                    mutable.set(enchantment, level);
+                    int currentLevel = mutable.getLevel(enchantment);
+                    int newLevel = calculateNewLevel(currentLevel, level);
+                    mutable.set(enchantment, newLevel);
                     stack.set(DataComponents.ENCHANTMENTS, mutable.toImmutable());
                 }
                 ci.cancel();
@@ -47,8 +56,23 @@ public abstract class ItemStackMixin {
         }
     }
 
+    @Unique
+    private int calculateNewLevel(int currentLevel, int newLevel) {
+        if (ModConfig.getInstance().isAllowLevelStacking()) {
+            return currentLevel + newLevel;
+        } else if (ModConfig.getInstance().isAllowVanillaLevelStacking() && currentLevel == newLevel) {
+            return currentLevel + 1;
+        } else if (currentLevel > 0) {
+            return currentLevel;
+        }
+        return newLevel;
+    }
+
     @Inject(method = "isEnchantable", at = @At("HEAD"), cancellable = true)
     private void onIsEnchantable(CallbackInfoReturnable<Boolean> cir) {
+        if (!ModConfig.getInstance().isAllowEnchantmentTableRestacking()) {
+            return;
+        }
         ItemStack stack = (ItemStack)(Object)this;
         cir.setReturnValue(!stack.isEmpty() && stack.getCount() == 1);
     }

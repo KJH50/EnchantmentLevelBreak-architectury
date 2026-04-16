@@ -18,6 +18,7 @@ public class FabricConfig extends ModConfig {
     private boolean allowAnyEnchantment = false;
     private boolean allowVanillaLevelStacking = true;
     private boolean allowLevelStacking = false;
+    private boolean allowEnchantmentTableRestacking = false;
     private int romanNumeralsThreshold = 5000;
     private int maxEnchantmentLevel = Integer.MAX_VALUE;
 
@@ -71,6 +72,11 @@ public class FabricConfig extends ModConfig {
     @Override
     public boolean isAllowLevelStacking() {
         return allowLevelStacking;
+    }
+
+    @Override
+    public boolean isAllowEnchantmentTableRestacking() {
+        return allowEnchantmentTableRestacking;
     }
 
     @Override

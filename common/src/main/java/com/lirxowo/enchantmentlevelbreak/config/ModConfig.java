@@ -18,6 +18,7 @@ public abstract class ModConfig {
     public abstract boolean isAllowAnyEnchantment();
     public abstract boolean isAllowVanillaLevelStacking();
     public abstract boolean isAllowLevelStacking();
+    public abstract boolean isAllowEnchantmentTableRestacking();
     public abstract int getMaxEnchantmentLevel();
     public abstract int getRomanNumeralsThreshold();
 }

@@ -8,7 +8,6 @@
     "Command",
     "EnchantmentDisplayMixin",
     "EnchantmentHelperMixin",
-    "Helper",
     "ItemEnchantmentsConstructorMixin",
     "ItemEnchantmentsMixin",
     "ItemStackMixin"

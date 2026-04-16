@@ -28,6 +28,10 @@ public class NeoForgeConfig extends ModConfig {
             .comment("Allow unlimited enchantment level stacking in anvil (e.g. 4+4=8 instead of vanilla's 4+4=5)")
             .define("allowLevelStacking", false);
 
+    private static final ModConfigSpec.BooleanValue ALLOW_ENCHANTMENT_TABLE_RESTACKING_VALUE = BUILDER
+            .comment("Allow enchantment table to re-enchant already enchanted items")
+            .define("allowEnchantmentTableRestacking", false);
+
     private static final ModConfigSpec.IntValue ROMAN_NUMERALS_THRESHOLD_VALUE = BUILDER
             .comment("Maximum level to use roman numerals (levels above this will use arabic numbers)")
             .defineInRange("romanNumeralsThreshold", 5000, 1, Integer.MAX_VALUE);
@@ -42,6 +46,7 @@ public class NeoForgeConfig extends ModConfig {
     private static boolean allowAnyEnchantment;
     private static boolean allowVanillaLevelStacking;
     private static boolean allowLevelStacking;
+    private static boolean allowEnchantmentTableRestacking;
     private static int romanNumeralsThreshold;
     private static int maxEnchantmentLevel;
 
@@ -56,6 +61,7 @@ public class NeoForgeConfig extends ModConfig {
         allowAnyEnchantment = ALLOW_ANY_ENCHANTMENT_VALUE.get();
         allowVanillaLevelStacking = ALLOW_VANILLA_LEVEL_STACKING_VALUE.get();
         allowLevelStacking = ALLOW_LEVEL_STACKING_VALUE.get();
+        allowEnchantmentTableRestacking = ALLOW_ENCHANTMENT_TABLE_RESTACKING_VALUE.get();
         romanNumeralsThreshold = ROMAN_NUMERALS_THRESHOLD_VALUE.get();
         maxEnchantmentLevel = MAX_ENCHANTMENT_LEVEL_VALUE.get();
     }
@@ -78,6 +84,11 @@ public class NeoForgeConfig extends ModConfig {
     @Override
     public boolean isAllowLevelStacking() {
         return allowLevelStacking;
+    }
+
+    @Override
+    public boolean isAllowEnchantmentTableRestacking() {
+        return allowEnchantmentTableRestacking;
     }
 
     @Override
